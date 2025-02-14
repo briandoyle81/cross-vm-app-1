@@ -1,6 +1,8 @@
-# Flow + RainbowKit Integration Demo
+# FCL + RainbowKit + Wagmi Integration Demo
 
-A demonstration of integrating Flow blockchain functionality with RainbowKit and Next.js, allowing users to connect both EVM and Flow wallets in a single application.
+A demonstration of integrating Flow blockchain cross-VM functionality with FCL, RainbowKit, Wagmi, and Next.js, allowing users to connect both EVM and Flow wallets in a single application.
+
+![FCL + RainbowKit Integration Demo](./.github/screenshot.png)
 
 ## Features
 
@@ -26,6 +28,7 @@ A demonstration of integrating Flow blockchain functionality with RainbowKit and
    ```bash
    npm install
    ```
+3. Install and build [FCL-JS](https://github.com/onflow/fcl-js) at the path `../fcl-js` (this can be configured in the `package.json` file).
 
 3. Run the development server:
    ```bash
