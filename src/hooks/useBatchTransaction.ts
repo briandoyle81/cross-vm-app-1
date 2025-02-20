@@ -147,9 +147,6 @@ export function useBatchTransaction() {
         e.type.includes("TransactionExecuted")
       )
 
-      // Extract the transaction hashes from each event's data
-      const txHashes = executedEvents.map((e: any) => e.data.txHash)
-
       // Build a full outcomes array for every call.
       // For any call index where no event exists, mark it as "skipped".
       const outcomes: CallOutcome[] = calls.map((_, index) => {
