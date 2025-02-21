@@ -1,6 +1,6 @@
 'use client'
 
-import { flowWallet } from '@onflow/fcl-rainbowkit-adapter';
+import { flowWallet, walletConnectWallet } from '@onflow/fcl-rainbowkit-adapter';
 import { connectorsForWallets } from '@rainbow-me/rainbowkit';
 import {
   flowTestnet,
@@ -17,11 +17,12 @@ fcl.config({
 const connectors = connectorsForWallets([
   {
     groupName: "Recommended",
-    "wallets": [
+    wallets: [
       flowWallet({
         user: fcl.currentUser,
         config: fcl.config
       }) as any,
+      walletConnectWallet as any,
     ],
   }
 ], {

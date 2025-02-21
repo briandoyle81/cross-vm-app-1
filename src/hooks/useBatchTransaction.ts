@@ -32,7 +32,7 @@ export function encodeCalls(calls: EVMBatchCall[]): Array<Array<{ key: string; v
     return [
       { key: "address", value: call.address },
       { key: "data", value: encodedData },
-      { key: "value",  value: call.value?.toString() ?? 0 },
+      { key: "value",  value: call.value?.toString() ?? "0" },
     ]
   })
 }
@@ -150,7 +150,7 @@ export function useBatchTransaction() {
       // Build a full outcomes array for every call.
       // For any call index where no event exists, mark it as "skipped".
       const outcomes: CallOutcome[] = calls.map((_, index) => {
-        const outcomeFromEvent = executedEvents.find((o: any) => o.index === index)
+        const outcomeFromEvent = executedEvents.find((o: any) => o.index === index)?.data
         if (outcomeFromEvent) {
           return {
             hash: outcomeFromEvent.txHash,
@@ -159,9 +159,7 @@ export function useBatchTransaction() {
           }
         } else {
           return {
-            hash: null,
             status: "skipped",
-            errorMessage: null,
           }
         }
       })

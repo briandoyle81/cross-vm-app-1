@@ -15,9 +15,7 @@ function Page() {
 
   useEffect(() => {
     const unsub = fcl.currentUser().subscribe((user: CurrentUser) => {
-      if (user.addr) {
-        setFlowAddress(user.addr);
-      }
+      setFlowAddress(user.addr ?? null);
     });
     return () => unsub();
   }, []);
@@ -76,7 +74,7 @@ function Page() {
       <button onClick={() => sendBatchTransaction(calls)}>
         Send Batch Transaction Example
       </button>
-      {txStatus && <p>{txStatus}</p>}
+      {/*txStatus && <p>{txStatus}</p>*/}
       <CodeEvaluator />
     </>
   );
