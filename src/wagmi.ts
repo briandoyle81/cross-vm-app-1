@@ -10,8 +10,9 @@ import { createConfig, http } from 'wagmi';
 
 fcl.config({
   "accessNode.api": "https://rest-testnet.onflow.org",
-  "discovery.wallet": "https://fcl-discovery.onflow.org/testnet/authn",
+  "discovery.wallet": "https://fcl-discovery.onflow.org/mainnet/authn",
   "walletconnect.projectId": "9b70cfa398b2355a5eb9b1cf99f4a981",
+  "walletconnect.disableNotifications": true,
 })
 
 const connectors = connectorsForWallets([
