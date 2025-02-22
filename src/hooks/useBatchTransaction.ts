@@ -1,5 +1,5 @@
 import * as fcl from '@onflow/fcl'
-import {Abi, encodeFunctionData} from 'viem'
+import {Abi, bytesToHex, encodeFunctionData, toBytes} from 'viem'
 import {useState} from 'react'
 import {useAccount} from "wagmi";
 
@@ -19,7 +19,23 @@ export interface CallOutcome {
   errorMessage?: string;
 }
 
-// Helper to encode our calls using viem.
+export type EvmTransactionExecutedData = {
+  hash: string[],
+  index: string,
+  type: string,
+  payload: string[],
+  errorCode: string,
+  errorMessage: string,
+  gasConsumed: string,
+  contractAddress: string,
+  logs: string[],
+  blockHeight: string,
+  returnedData: string[],
+  precompiledCalls: string[],
+  stateUpdateChecksum: string,
+}
+
+// Helper to encode our ca lls using viem.
 // Returns an array of objects with keys "address" and "data" (hex-encoded string without the "0x" prefix).
 export function encodeCalls(calls: EVMBatchCall[]): Array<Array<{ key: string; value: string }>> {
   return calls.map(call => {
@@ -101,13 +117,18 @@ export function useBatchTransaction() {
   const [results, setResults] = useState<CallOutcome[]>([])
 
   async function sendBatchTransaction(calls: EVMBatchCall[], mustPass: boolean = true) {
-    if (!cadenceTx) {
-      throw new Error("No current chain found")
-    }
+    // Reset state
+    setIsPending(true)
+    setIsError(false)
+    setTxId("")
+    setResults([])
 
-    const encodedCalls = encodeCalls(calls)
     try {
-      setIsPending(true)
+      if (!cadenceTx) {
+        throw new Error("No current chain found")
+      }
+  
+      const encodedCalls = encodeCalls(calls)
 
       const txId = await fcl.mutate({
         cadence: cadenceTx,
@@ -155,12 +176,12 @@ export function useBatchTransaction() {
       // Build a full outcomes array for every call.
       // For any call index where no event exists, mark it as "skipped".
       const outcomes: CallOutcome[] = calls.map((_, index) => {
-        const outcomeFromEvent = executedEvents.find((o: any) => o.index === index)?.data
-        if (outcomeFromEvent) {
+        const eventData = executedEvents[index]?.data as EvmTransactionExecutedData
+        if (eventData) {
           return {
-            hash: outcomeFromEvent.txHash,
-            status: outcomeFromEvent.statusCode === "0" ? "passed" : "failed",
-            errorMessage: outcomeFromEvent.errorMessage
+            hash: bytesToHex(Uint8Array.from(eventData.hash.map((x: string) => parseInt(x, 10)))),
+            status: eventData.errorCode === "0" ? "passed" : "failed",
+            errorMessage: eventData.errorMessage
           }
         } else {
           return {

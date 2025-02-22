@@ -74,7 +74,7 @@ function Page() {
       <button onClick={() => sendBatchTransaction(calls)}>
         Send Batch Transaction Example
       </button>
-      {/*txStatus && <p>{txStatus}</p>*/}
+      {<p>{JSON.stringify({isPending, isError, txId, results})}</p>}
       <CodeEvaluator />
     </>
   );
