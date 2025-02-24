@@ -4,6 +4,13 @@ A demonstration of integrating Flow blockchain cross-VM functionality with FCL, 
 
 ![FCL + RainbowKit Integration Demo](./.github/screenshot.png)
 
+✨ Supercharge Your Apps with Cadence ✨
+
+- 🔗 **Seamless Cross-VM Integration** – Connect Flow and EVM wallets effortlessly.
+- 🔥 **Leverage Cadence's Power** – Enhance dApps with composable, atomic interactions.
+- 🚀 **Progressive Adoption** – Incrementally integrate Flow’s features without disrupting existing workflows.
+- ⚡ **Bundled Transactions** – Execute multiple operations in a single atomic transaction using FCL and Cadence, reducing gas costs and improving efficiency.
+
 ## Features
 
 - Connect to Flow and EVM wallets using RainbowKit
@@ -52,6 +59,18 @@ A demonstration of integrating Flow blockchain cross-VM functionality with FCL, 
 - [Flow Client Library (FCL)](https://docs.onflow.org/fcl/) - Flow blockchain interaction
 - [React](https://react.dev/) - UI library
 - [TypeScript](https://www.typescriptlang.org/) - Type safety
+
+## Related Packages
+
+These packages are currently in alpha and make it possible for a Wagmi/RainbowKit app to integrate with Flow tooling by bridging the gap between EVM and Cadence:
+
+- [FCL Ethereum Provider](https://github.com/onflow/fcl-js/blob/feature/cross-vm/packages/fcl-ethereum-provider/README.md) - Acts as an Ethereum provider for FCL to enable Cadence and EVM interactions in a single session.
+- [FCL Wagmi Adapter](https://github.com/onflow/fcl-js/blob/feature/cross-vm/packages/fcl-wagmi-adapter/README.md) - Provides seamless integration of FCL with Wagmi's wallet connectors.
+- [FCL RainbowKit Adapter](https://github.com/onflow/fcl-js/tree/feature/cross-vm/packages/fcl-rainbowkit-adapter) - Enables RainbowKit to support FCL-compatible wallets.
+
+This integration facilitates progressive adoption of Cadence in Ethereum applications by unifying wallet session management and reducing tooling fragmentation.
+
+Read more about this proposal in the [Cross VM FLIP](https://github.com/onflow/flips/blob/b7ec911e8f218364f8d2b9057ba1d4806eb6085f/application/20241223-fcl-ethereum-provider.md).
 
 ## Development
 
