@@ -1,13 +1,12 @@
 'use client'
 
 import { ConnectButton } from '@rainbow-me/rainbowkit';
-import CodeEvaluator from './code-evaluator';
 import { useAccount } from 'wagmi';
 import { useEffect, useState } from 'react';
 import * as fcl from '@onflow/fcl';
 import { CurrentUser } from '@onflow/typedefs';
 import {EVMBatchCall, useBatchTransaction} from "../hooks/useBatchTransaction";
-
+import Content from '../components/Content';
 function Page() {
   const coa = useAccount();
   const [flowAddress, setFlowAddress] = useState<string | null>(null);
@@ -75,7 +74,7 @@ function Page() {
         Send Batch Transaction Example
       </button>
       {<p>{JSON.stringify({isPending, isError, txId, results})}</p>}
-      <CodeEvaluator />
+      <Content />
     </>
   );
 }
