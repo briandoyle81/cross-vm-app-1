@@ -20,7 +20,7 @@ export default function TheButton({ writeContract, awaitingResponse, setAwaiting
       address: clickToken.address,
       functionName: 'mintTo',
       args: [account.address],
-      gas: 5000000,
+      gas: 45000,
     });
   }
 

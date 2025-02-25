@@ -7,6 +7,9 @@ import * as fcl from '@onflow/fcl';
 import { CurrentUser } from '@onflow/typedefs';
 import {EVMBatchCall, useBatchTransaction} from "../hooks/useBatchTransaction";
 import Content from '../components/Content';
+import { clickToken } from '../constants/contracts';
+import { Abi } from 'viem';
+
 function Page() {
   const coa = useAccount();
   const [flowAddress, setFlowAddress] = useState<string | null>(null);
@@ -19,48 +22,12 @@ function Page() {
     return () => unsub();
   }, []);
 
-  // Define a "real" calls array to demonstrate a batch transaction.
-  // In this example, we call two functions on a token contract:
-  // 1. deposit() to wrap FLOW (e.g., WFLOW)
-  // 2. approve() to allow a spender to spend tokens.
-  const calls: EVMBatchCall[] = [
-    {
-      // Call deposit() function (wrap FLOW) on the token contract.
-      address: '0xd3bF53DAC106A0290B0483EcBC89d40FcC961f3e', // Replace with your actual token contract address.
-      abi: [
-        {
-          inputs: [],
-          name: "deposit",
-          outputs: [],
-          stateMutability: "payable",
-          type: "function"
-        }
-      ],
-      functionName: "deposit",
-      args: [] // deposit takes no arguments; value is passed with the call.
-    },
-    {
-      // Call approve() function (ERC20 style) on the same token contract.
-      address: '0xd3bF53DAC106A0290B0483EcBC89d40FcC961f3e', // Replace with your actual token contract address if needed.
-      abi: [
-        {
-          inputs: [
-            { name: "spender", type: "address" },
-            { name: "value", type: "uint256" }
-          ],
-          name: "approve",
-          outputs: [{ name: "", type: "bool" }],
-          stateMutability: "nonpayable",
-          type: "function"
-        }
-      ],
-      functionName: "approve",
-      args: [
-        '0x2E2Ed0Cfd3AD2f1d34481277b3204d807Ca2F8c2', // Spender address.
-        BigInt("1000000000000000000") // Approve 1 token (assuming 18 decimals).
-      ]
-    }
-  ];
+  const calls: EVMBatchCall[] = Array.from({ length: 10 }, () => ({
+    address: clickToken.address, // Replace with your actual token contract address.
+    abi: clickToken.abi as Abi,
+    functionName: "mintTo",
+    args: [coa?.address],
+  }));
 
   return (
     <>
