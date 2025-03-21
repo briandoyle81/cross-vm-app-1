@@ -18,11 +18,8 @@ const connectors = connectorsForWallets([
   {
     groupName: "Recommended",
     wallets: [
-      flowWallet({
-        user: fcl.currentUser,
-        config: fcl.config
-      }) as any,
-      walletConnectWallet as any,
+      flowWallet(),
+      walletConnectWallet,
     ],
   }
 ], {
