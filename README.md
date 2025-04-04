@@ -72,9 +72,9 @@ This integration facilitates progressive adoption of Cadence in Ethereum applica
 
 Read more about this proposal in the [Cross VM FLIP](https://github.com/onflow/flips/blob/b7ec911e8f218364f8d2b9057ba1d4806eb6085f/application/20241223-fcl-ethereum-provider.md).
 
-## EVM Batch Transactions with Cadence
+## Official Documentation
 
-To learn more about batched EVM transactions using Cadence, [read the guide](https://developers.flow.com/evm/cadence/batched-evm-transactions).
+To learn more about building cross-VM apps in Cadence, please [read the official guide here](https://developers.flow.com/tutorials/cross-vm-apps/add-to-wagmi).
 
 ## Development
 
