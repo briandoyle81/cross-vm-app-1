@@ -8,22 +8,21 @@ import {
   useAccount,
 } from 'wagmi';
 import TheButton from './TheButton';
+import SuperButton from './SuperButton';
 
 import { ConnectButton } from '@rainbow-me/rainbowkit';
 import * as fcl from '@onflow/fcl';
 import { CurrentUser } from '@onflow/typedefs';
-import { EVMBatchCall, useBatchTransaction } from "../hooks/useBatchTransaction";
-import { clickToken } from '../constants/contracts';
-import { Abi } from 'viem';
+import { useBatchTransaction } from '../hooks/useBatchTransaction';
 
 export default function Content() {
   const [flowAddress, setFlowAddress] = useState<string | null>(null);
-  const { sendBatchTransaction, isPending, isError, txId, results } = useBatchTransaction();
-
   const [reload, setReload] = useState(false);
   const [awaitingResponse, setAwaitingResponse] = useState(false);
 
   const account = useAccount();
+
+  const { sendBatchTransaction, isPending, isError, txId, results } = useBatchTransaction();
 
   const { data, writeContract, error: writeError } = useWriteContract();
 
@@ -32,12 +31,12 @@ export default function Content() {
   });
 
   useEffect(() => {
-    if (receipt) {
+    if (receipt || results.length > 0) {
       console.log('Transaction receipt:', receipt);
       setReload(true);
       setAwaitingResponse(false);
     }
-  }, [receipt]);
+  }, [receipt, results]);
 
   useEffect(() => {
     if (writeError) {
@@ -60,13 +59,6 @@ export default function Content() {
     return () => unsub();
   }, []);
 
-  const calls: EVMBatchCall[] = Array.from({ length: 10 }, () => ({
-    address: clickToken.address,
-    abi: clickToken.abi as Abi,
-    functionName: 'mintTo',
-    args: [account?.address],
-  }));
-
   return (
     <div>
       <div className="flex justify-end p-3">
@@ -76,19 +68,6 @@ export default function Content() {
       <h3>EVM Address: {account?.address}</h3>
       <br />
       <div className="flex flex-row items-center justify-center">
-        <div className="bg-blue-500 text-white p-4 m-4 rounded">
-          <div>
-            With the <a href="https://wallet.flow.com/" target="_blank" rel="noopener noreferrer">Flow Wallet</a>, you can sign 10 mint transactions at once!
-          </div>
-          <button 
-            disabled={!flowAddress} 
-            onClick={() => sendBatchTransaction(calls)}
-            className="w-full py-4 px-8 text-2xl font-bold text-white bg-blue-600 hover:bg-blue-700 rounded-lg shadow-lg transition-transform transform active:scale-95 disabled:bg-gray-400 disabled:cursor-not-allowed"
-          >
-            {flowAddress ? 'Mint 10 at Once!' : 'Requires Flow Wallet'}
-          </button>
-          {<p>{JSON.stringify({ isPending, isError, txId, results })}</p>}
-        </div>
         <div className="bg-green-500 text-white p-4 m-4 rounded">
           {account.address && (
             <div className="mb-4">
@@ -101,6 +80,18 @@ export default function Content() {
           )}
           <br />
         </div>
+        {account.address && (
+          <SuperButton
+            flowAddress={flowAddress}
+            awaitingResponse={awaitingResponse}
+            setAwaitingResponse={setAwaitingResponse}
+            sendBatchTransaction={sendBatchTransaction}
+            isPending={isPending}
+            isError={isError}
+            txId={txId}
+            results={results}
+          />
+        )}
       </div>
       {<TopTenDisplay reloadScores={reload} setReloadScores={setReload} />}
     </div>

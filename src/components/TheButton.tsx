@@ -12,37 +12,41 @@ interface theButtonProps {
 }
 
 export default function TheButton({
-    writeContract,
-    awaitingResponse,
-    setAwaitingResponse,
+  writeContract,
+  awaitingResponse,
+  setAwaitingResponse,
 }: theButtonProps) {
-    const account = useAccount();
+  const account = useAccount();
 
-    function handleClick() {
-        setAwaitingResponse(true);
-        writeContract({
-            abi: clickToken.abi,
-            address: clickToken.address,
-            functionName: 'mintTo',
-            args: [account.address],
-        });
+  function handleClick() {
+    try {
+      writeContract({
+        abi: clickToken.abi,
+        address: clickToken.address,
+        functionName: 'mintTo',
+        args: [account.address],
+      });
+      setAwaitingResponse(true);
+    } catch (error) {
+      console.error('Write contract failed:', error);
     }
+  }
 
-    return (
-        <>
-            {!awaitingResponse && (
-                <button
-                    onClick={handleClick}
-                    className="w-full py-4 px-8 text-2xl font-bold text-white bg-green-500 hover:bg-green-600 rounded-lg shadow-lg transition-transform transform active:scale-95"
-                >
-                    Click Me!!!
-                </button>
-            )}
-            {awaitingResponse && (
-                <button className="disabled w-full py-4 px-8 text-2xl font-bold text-white bg-gray-500 rounded-lg shadow-lg">
-                    Please Wait...
-                </button>
-            )}
-        </>
-    );
+  return (
+    <>
+      {!awaitingResponse && (
+        <button
+          onClick={handleClick}
+          className="w-full py-4 px-8 text-2xl font-bold text-white bg-green-500 hover:bg-green-600 rounded-lg shadow-lg transition-transform transform active:scale-95"
+        >
+          Click Me!!!
+        </button>
+      )}
+      {awaitingResponse && (
+        <button className="disabled w-full py-4 px-8 text-2xl font-bold text-white bg-gray-500 rounded-lg shadow-lg">
+          Please Wait...
+        </button>
+      )}
+    </>
+  );
 }
