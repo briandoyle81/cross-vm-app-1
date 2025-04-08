@@ -54,56 +54,75 @@ export default function TopTenDisplay({
     function renderTopTen() {
         if (scores.length === 0 || !account) {
             return (
-                <ol>
-                    <li>Loading...</li>
-                </ol>
+                <div className="flex items-center justify-center p-8">
+                    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-white"></div>
+                </div>
             );
         }
-        // Only display the top 10 scores.  If the user is in the top 10, bold the item with their score.  If not, show it at the bottom with their ranking number
+
         const topTen = scores.length > 10 ? scores.slice(0, 10) : scores;
-        // myRank is my address's position in the array of scores, +1.  If it's not present, my rank is the length of the array
         const myRank =
             scores.findIndex((entry) => entry.user === account?.address) + 1 ||
             scores.length + 1;
 
         const topTenList = topTen.map((entry, index) => {
+            const isCurrentUser = entry.user === account.address;
             return (
-                <li key={entry.user + index + 1}>
-                    {entry.user === account.address ? (
-                        <strong>
-                            {index + 1} -- {renderAddress(entry.user)} --{' '}
-                            {formatUnits(entry.value, 18)}
-                        </strong>
-                    ) : (
-                        <>
-                            {index + 1} -- {renderAddress(entry.user)} --{' '}
-                            {formatUnits(entry.value, 18)}
-                        </>
-                    )}
-                </li>
+                <div
+                    key={entry.user + index + 1}
+                    className={`flex items-center justify-between p-3 rounded-lg mb-2 ${
+                        isCurrentUser
+                            ? 'bg-blue-900/50 border border-blue-500'
+                            : 'bg-gray-700/50'
+                    }`}
+                >
+                    <div className="flex items-center">
+                        <span className="text-gray-400 w-8">{index + 1}.</span>
+                        <span className={`font-mono ${isCurrentUser ? 'text-blue-300' : 'text-gray-300'}`}>
+                            {renderAddress(entry.user)}
+                        </span>
+                    </div>
+                    <span className={`font-bold ${isCurrentUser ? 'text-blue-300' : 'text-white'}`}>
+                        {formatUnits(entry.value, 18)}
+                    </span>
+                </div>
             );
         });
 
-        // Append my score if myRank is > 10
         if (account?.address && (myRank > 10 || myRank > scores.length)) {
             topTenList.push(
-                <li key={myRank}>
-                    <strong>
-                        {myRank} -- {renderAddress(account.address.toString())} --{' '}
+                <div
+                    key={myRank}
+                    className="flex items-center justify-between p-3 rounded-lg mb-2 bg-blue-900/50 border border-blue-500"
+                >
+                    <div className="flex items-center">
+                        <span className="text-gray-400 w-8">{myRank}.</span>
+                        <span className="font-mono text-blue-300">
+                            {renderAddress(account.address.toString())}
+                        </span>
+                    </div>
+                    <span className="font-bold text-blue-300">
                         {myRank > scores.length
-                            ? 0
+                            ? '0'
                             : formatUnits(scores[myRank - 1].value, 18)}
-                    </strong>
-                </li>,
+                    </span>
+                </div>
             );
         }
 
-        return <ol>{topTenList}</ol>;
+        return (
+            <div className="space-y-2">
+                <div className="grid grid-cols-2 text-sm text-gray-400 mb-2 px-3">
+                    <span>Player</span>
+                    <span className="text-right">Score</span>
+                </div>
+                {topTenList}
+            </div>
+        );
     }
 
     return (
-        <div>
-            <h3>Top 10 Scores</h3>
+        <div className="bg-gray-800/50 rounded-lg p-4">
             {renderTopTen()}
         </div>
     );
