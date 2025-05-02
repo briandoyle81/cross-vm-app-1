@@ -1,7 +1,7 @@
 'use client';
 
 import { useAccount } from 'wagmi';
-import { clickToken } from '../constants/contracts';
+import { getClickToken } from '../constants/contracts';
 
 interface theButtonProps {
     // eslint-disable-next-line
@@ -16,12 +16,14 @@ export default function TheButton({
   setAwaitingResponse,
 }: theButtonProps) {
   const account = useAccount();
+  const network = account.chain?.id === 1 ? 'mainnet' : 'testnet';
 
   function handleClick() {
     try {
+      const { abi, address } = getClickToken(network);
       writeContract({
-        abi: clickToken.abi,
-        address: clickToken.address,
+        abi,
+        address,
         functionName: 'mintTo',
         args: [account.address],
       });

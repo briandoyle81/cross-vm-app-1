@@ -1,5 +1,5 @@
 import { useAccount, useReadContract } from 'wagmi';
-import { clickToken } from '../constants/contracts';
+import { getClickToken } from '../constants/contracts';
 import { useEffect, useState } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
 import { formatUnits } from 'viem';
@@ -22,10 +22,11 @@ export default function TopTenDisplay({
 
     const account = useAccount();
     const queryClient = useQueryClient();
-
+    const network = account.chain?.id === 1 ? 'mainnet' : 'testnet';
+    const { abi, address } = getClickToken(network);
     const { data: scoresData, queryKey: getAllScoresQueryKey } = useReadContract({
-        abi: clickToken.abi,
-        address: clickToken.address as `0x${string}`,
+        abi,
+        address: address as `0x${string}`,
         functionName: 'getAllScores',
     });
 

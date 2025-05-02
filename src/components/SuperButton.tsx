@@ -1,7 +1,7 @@
 'use client';
 
 import { useAccount } from 'wagmi';
-import { clickToken } from '../constants/contracts';
+import { getClickToken } from '../constants/contracts';
 import { CallOutcome, EVMBatchCall } from "../hooks/useBatchTransaction";
 import { Abi } from 'viem';
 
@@ -27,10 +27,11 @@ export default function SuperButton({
   results,
 }: SuperButtonProps) {
   const account = useAccount();
-    
+  const network = account.chain?.id === 1 ? 'mainnet' : 'testnet';
+  const { abi, address } = getClickToken(network);
   const calls: EVMBatchCall[] = Array.from({ length: 10 }, () => ({
-    address: clickToken.address,
-    abi: clickToken.abi as Abi,
+    address,
+    abi: abi as Abi,
     functionName: 'mintTo',
     args: [account?.address],
   }));
