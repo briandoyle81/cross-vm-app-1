@@ -70,6 +70,16 @@ export default function Content() {
           <h1 className="text-4xl font-bold mb-4">Click to Mint</h1>
           <div className="mb-4">
             <a 
+              href="https://developers.flow.com/tutorials/cross-vm-apps/introduction" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="text-blue-400 hover:text-blue-300 text-sm"
+            >
+              Learn how to build an app with batched transactions on Flow
+            </a>
+          </div>
+          <div className="mb-4">
+            <a 
               href="https://evm-testnet.flowscan.io/address/0xA7Cf2260e501952c71189D04FAd17c704DFB36e6?tab=txs" 
               target="_blank" 
               rel="noopener noreferrer"
