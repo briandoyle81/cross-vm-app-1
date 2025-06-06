@@ -48,7 +48,7 @@ export default function TopTenDisplay({
     }, [reloadScores]);
 
     function renderAddress(address: string) {
-        return address?.slice(0, 5) + '...' + address?.slice(-3);
+        return address;
     }
 
     function renderTopTen() {
