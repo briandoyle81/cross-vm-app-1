@@ -5,6 +5,8 @@ import { clickToken } from '../constants/contracts';
 import { CallOutcome, EVMBatchCall } from "../hooks/useBatchTransaction";
 import { Abi } from 'viem';
 
+const MINT_AMOUNT = 80;
+
 interface SuperButtonProps {
     flowAddress: string | null;
     awaitingResponse: boolean;
@@ -28,7 +30,7 @@ export default function SuperButton({
 }: SuperButtonProps) {
   const account = useAccount();
     
-  const calls: EVMBatchCall[] = Array.from({ length: 10 }, () => ({
+  const calls: EVMBatchCall[] = Array.from({ length: MINT_AMOUNT }, () => ({
     address: clickToken.address,
     abi: clickToken.abi as Abi,
     functionName: 'mintTo',
@@ -44,7 +46,7 @@ export default function SuperButton({
     <div>
       <div className="mb-4 text-gray-300 h-12 flex items-center">
         <span>
-          With the <a href="https://wallet.flow.com/" target="_blank" rel="noopener noreferrer" className="text-blue-400 hover:text-blue-300">Flow Wallet</a>, you can sign 10 mint transactions at once!
+          With the <a href="https://wallet.flow.com/" target="_blank" rel="noopener noreferrer" className="text-blue-400 hover:text-blue-300">Flow Wallet</a>, you can mint {MINT_AMOUNT} at once!
         </span>
       </div>
       {!awaitingResponse && (
@@ -53,7 +55,7 @@ export default function SuperButton({
           onClick={handleClick}
           className="w-full py-4 px-8 text-xl font-bold text-white bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 rounded-lg shadow-lg transition-all transform hover:scale-[1.02] active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
         >
-          {flowAddress ? 'Mint 10 at Once!' : 'Requires Flow Wallet'}
+          {flowAddress ? `Mint ${MINT_AMOUNT} at Once!` : 'Requires Flow Wallet'}
         </button>
       )}
       {awaitingResponse && (
